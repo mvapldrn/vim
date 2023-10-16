@@ -1,0 +1,286 @@
+" ---------------------------------------------------------------------------
+" Name         : .vimrc
+" Purpose      : Setup vim upon start
+" Copyright    : Copyright (C) 2005, M.C. van Apeldoorn
+"
+"   This program is free software; you can redistribute it and/or modify
+"   it under the terms of the GNU General Public License as published by
+"   the Free Software Foundation; either version 2 of the License, or
+"   (at your option) any later version.
+"
+"   This program is distributed in the hope that it will be useful,
+"   but WITHOUT ANY WARRANTY; without even the implied warranty of
+"   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+"   GNU General Public License for more details.
+"
+"   You should have received a copy of the GNU General Public License
+"   along with this program; if not, write to the Free Software
+"   Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+"
+" Author       : Marcel van Apeldoorn
+"                <mvapldrn@nlr.nl|marcel@vapeldoorn.net>
+" URL          : wwww.vapeldoorn.net
+" Last modified: 23-Jun-2009 06:41
+" ----------------------------------------------------------------------------
+
+set nocompatible              " be iMproved, required
+filetype off                  " required
+
+" set the runtime path to include Vundle and initialize
+set rtp+=~/.vim/bundle/Vundle.vim
+call vundle#begin()
+Plugin 'VundleVim/Vundle.vim'
+Plugin 'scrooloose/nerdtree'
+Plugin 'vim-scripts/grep.vim'
+Plugin 'vim-scripts/SuperTab'
+Plugin 'junegunn/fzf', { 'do': { -> fzf#install() } }
+Plugin 'junegunn/fzf.vim'
+" All of your Plugins must be added before the following line
+call vundle#end()            " required
+filetype plugin indent on    " required
+" To ignore plugin indent changes, instead use:
+"filetype plugin on
+"
+" Brief help
+" :PluginList       - lists configured plugins
+" :PluginInstall    - installs plugins; append `!` to update or just :PluginUpdate
+" :PluginSearch foo - searches for foo; append `!` to refresh local cache
+" :PluginClean      - confirms removal of unused plugins; append `!` to auto-approve removal
+"
+" see :h vundle for more details or wiki for FAQ
+" Put your non-Plugin stuff after this line
+
+" **** GLOBAL VIM SETTINGS **** {{{1
+
+" Don't use vi-compatible mode
+set nocompatible
+
+" Use a viminfo file (stores information during session, to restore when
+" when new session is started again)
+set viminfo=%,'50,\"100,:100,n~/.viminfo
+
+" I like long histories
+set history=1000
+
+" Detect the type of file
+filetype on
+
+" Load filetype plugins
+filetype plugin on
+
+" Supported fileformats (in this order!)
+set fileformats=unix,dos
+
+" These should not divide words
+set iskeyword+=_
+
+" disable escape keys (using <ESC> in functions keys when in insert mode)
+set noesckeys
+"set esckeys
+
+" Buffer becomes hidden when abandoned (not unloaded)
+" set hidden
+
+" Enable showcommand
+if has("cmdline_info")
+  set showcmd
+endif
+
+" Use visual bell instead of beeping
+set visualbell
+" No error bells
+set noerrorbells
+
+" Always show the ruler
+set ruler
+
+" Set lines for scope
+set so=5
+
+" No blinking of cursor
+set novisualbell
+"set visualbell
+
+" Wildmenu (TAB command line completion)
+if has("wildmenu")
+  set wildmenu
+endif
+
+" No error bells
+set noerrorbells
+" }}}1
+
+" **** INDENTING **** {{{1
+
+" Do use cindent autoindent
+set cindent
+" Set tabstop to 4
+set tabstop=4
+" Set shiftwidth (used for (auto)indent) to 4
+set shiftwidth=4
+" Expand tab (inserts spaces for TAB presses)
+set expandtab
+" Disable linebreaking when inserting text
+set textwidth=0
+"}}}1
+
+" **** SEARCHING **** {{{1
+"
+" Search pattern options
+if has("extra_search")
+  " Highlight search pattern
+  set hlsearch
+  " Show immediately where the so far typed pattern matches
+  set incsearch
+endif
+"}}}1
+
+" **** GUI and View **** {{{1
+
+" Minimum height of window may be 0, i.e. only a status bar
+set winminheight =0
+" Use the shortmessages
+set shortmess=flnxsI
+" Make command bar height 2
+set cmdheight=2
+" Dont wrap text
+set nowrap
+" Lazyredraw makes macros work faster
+set lz
+" Always notify when things have changed
+set report=0
+" Use list mode; show special characters (defined in listchars)
+set list
+"   Characters to use for listmode
+set listchars=tab:»\ 
+set listchars+=trail:\ 
+set listchars+=extends:#
+set listchars+=precedes:#
+
+if has("statusline")
+  " Always show the statusline
+  set laststatus=2
+  set statusline=%<%f%y%=%-30(%1*%m%*%n%r%h%)%-19(%3l,%02c%)
+endif
+
+" Folding
+if has("folding") && has("windows")
+  set fcs=stlnc:=,vert:\ ,fold:-,diff:-
+endif
+if has("folding")
+  set foldmethod=marker
+  set foldcolumn=1
+endif
+
+" Use my own colorscheme
+colorscheme mva
+
+" Enable mouse in all modes
+set mouse=a
+
+" Create a new tab page (identical to Firefox)
+nnoremap <C-T>  :tabnew<CR>
+
+" All windows are automaticaaly made the same size after spliiting or closing
+set equalalways
+
+"}}}1
+
+" **** FILE TYPE SPECIFICS **** {{{1
+"
+if has("autocmd")
+  autocmd BufRead *.xdr  set filetype=c
+  autocmd BufRead *.svc  set filetype=c
+  autocmd BufRead *.ats  set filetype=ats
+
+  " When changing the .vimrc file, it gets sourced right away (use with caution)
+  autocmd BufWritePost ~/.vimrc so ~/.vimrc
+endif
+
+" needs filetype on
+filetype on
+filetype plugin on
+
+" syntax on
+syntax on
+
+" Some extra options for C-highlighting
+let c_space_errors=1
+let c_syntax_for_h=1
+let c_minlines=200
+
+"}}}1
+
+" **** MOVEMENT **** {{{1
+"
+" Mappings for cursor movements between windows. Now we can easily move
+" in a file with the cursorkeys and move between windows with the same
+" cursor keys and shift pressed
+map <S-Up>    <C-w>k
+map <S-Down>  <C-w>j
+map <S-Left>  <C-w>h
+map <S-Right> <C-w>l
+
+" Don't go to start of line when moving with CTRL-B and CTRL-F
+set nostartofline
+
+" Mappings for cursor movements between tabs.
+nnoremap <C-Left>  :tabprevious<CR>
+nnoremap <C-Right> :tabnext<CR>
+" }}}1
+
+" Make a log of all issued :w commands
+" cabbrev w <c-r>=(getcmdtype()==':' && getcmdpos()==1 ? 'W' : 'w')<CR>
+" command! -nargs=* W :execute("silent !echo " . strftime("%Y-%m-%d %H:%M:%S") . " >> ~/timestamps")|w <args>
+
+" No output from NERD_commenter
+let NERDShutUp=1
+
+" **** FUNCTION KEY MAPPINGS **** {{{1
+" F1-F4 File manipulation, autocompletion and searching
+" F1        NERD tree {{{2
+if !exists("loaded_nerd_tree")
+    let g:NERDTreeMapActivateNode = "<Right>"
+    let g:NERDTreeMapOpenRecursively = "<Left>"
+    " Toggle NERD tree on/off with F1
+    nnoremap <silent> <F1>    :NERDTreeToggle<CR>
+endif
+"}}}2
+"     Alt-Up    Buffers {{{2
+nnoremap <silent> <A-Up>  :Buffers<CR>
+:Buffers
+"}}}2
+"     F2        Tags {{{2
+nnoremap <silent> <F2>    :Tags<CR>
+"}}}2
+"     F3        Supertab settings {{{2
+nnoremap <silent> <F3> :SuperTabHelp<CR>
+" }}}2
+"     F4        Grep support {{{2
+nnoremap <silent> <F4> :Grep<CR>
+" }}}2
+" F5-F8 Build and debug tools
+"     F5        Make project {{{2
+nnoremap <silent> <F5>    :make<CR>
+"}}}2
+"     F6        Open quickfix window or close if no more errors {{{2
+nnoremap <silent> <F6>    :cwindow<CR>
+" }}}2
+"     F7        Close quickfix window {{{2
+nnoremap <silent> <F7>    :cclose<CR>
+" }}}2
+"     F8        Tasklist {{{2
+nnoremap <silent> <F8>    <Esc>:grep --exclude=*~ TODO * <CR> :copen <CR>
+" }}}2
+" F9-F12 Colorsettings, syntax highlighting, etc.
+"     F9        Toggle syntax highlighting on/off {{{2
+nnoremap <silent> <F9>    :if exists("syntax_on") <Bar>
+                              \   syntax off <Bar>
+                              \ else <Bar>
+                              \   syntax enable <Bar>
+                              \ endif <CR>
+"}}}2
+"     F10       Change colorscheme to mva {{{2
+nnoremap <silent> <F10>   :colorscheme mva<CR>
+"}}}1
+
