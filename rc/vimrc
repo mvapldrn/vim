@@ -248,7 +248,9 @@ endif
 "}}}2
 "     Alt-Up    Buffers {{{2
 nnoremap <silent> <A-Up>  :Buffers<CR>
-:Buffers
+"}}}2
+"     Alt-Down    Files {{{2
+nnoremap <silent> <A-Down>  :Files<CR>
 "}}}2
 "     F2        Tags {{{2
 nnoremap <silent> <F2>    :Tags<CR>
